@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 const facts = [
   { label: "Location", value: "Bishkek, Kyrgyzstan" },
   { label: "Focus", value: "React · Next.js · TypeScript" },
@@ -9,30 +11,26 @@ export function About() {
   return (
     <section
       id="about"
-      className="py-20 md:py-36 px-5 md:px-12 max-w-6xl mx-auto"
+      className="page-shell section-shell"
       aria-labelledby="about-heading"
     >
-      <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-start">
-        {/* Left — label + bio */}
+      <div className="grid items-start gap-12 md:grid-cols-2 md:gap-24">
         <div>
-          <div className="flex items-center gap-3 mb-8 md:mb-10">
-            <div className="w-1.5 h-1.5 bg-blue flex-shrink-0" />
-            <span className="text-[10px] font-bold tracking-[0.4em] text-blue uppercase font-sans">
+          <div className="section-header md:mb-10">
+            <div className="h-1.5 w-1.5 shrink-0 bg-blue" />
+            <span className="section-kicker">
               01 / About
             </span>
-            <div className="flex-1 h-px bg-border" />
+            <div className="section-divider" />
           </div>
 
-          <h2
-            id="about-heading"
-            className="text-[clamp(1.7rem,6vw,2.5rem)] md:text-4xl font-black tracking-tight text-foreground text-balance mb-6 md:mb-8 leading-tight"
-          >
+          <h2 id="about-heading" className="section-title mb-6 md:mb-8">
             Building interfaces
             <br />
             that feel inevitable.
           </h2>
 
-          <div className="space-y-4 md:space-y-5 text-[15px] md:text-base text-muted-foreground leading-relaxed font-light text-pretty">
+          <div className="section-copy space-y-4 md:space-y-5">
             <p>
               I&apos;m a frontend developer with a strong focus on the
               intersection of engineering and design. I care deeply about the
@@ -52,52 +50,44 @@ export function About() {
           </div>
         </div>
 
-        {/* Right — facts table */}
         <div>
-          {/* Facts — larger tap rows on mobile */}
-          <div className="border border-border divide-y divide-border">
+          <div className="surface-panel overflow-hidden">
             {facts.map(({ label, value }) => (
               <div
                 key={label}
-                className="flex justify-between items-center px-5 md:px-6 py-5 md:py-5 group hover:bg-accent active:bg-accent transition-colors duration-150 min-h-[56px]"
+                className="interactive-row group"
               >
-                <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase font-sans">
+                <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                   {label}
                 </span>
-                <span className="text-xs font-semibold text-foreground text-right group-hover:text-blue transition-colors duration-150 font-sans max-w-[55%] leading-snug">
+                <span className="motion-soft max-w-[55%] text-right font-sans text-xs font-semibold leading-snug text-foreground group-hover:text-blue">
                   {value}
                 </span>
               </div>
             ))}
           </div>
 
-          {/* Download CV — full-width, 56px minimum tap height */}
-          {/* Replace href="#" with the actual resume file path when ready */}
-          <a
-            href="/resume.pdf"
-            aria-label="Download Resume (PDF)"
-            className="mt-3 flex items-center justify-between w-full px-5 md:px-6 py-5 border border-blue/30 bg-blue-glow hover:bg-blue/10 active:bg-blue/10 transition-colors duration-200 group min-h-[56px] touch-manipulation"
-          >
-            <span className="text-xs font-bold tracking-[0.15em] text-blue uppercase font-sans">
-              Download Resume
-            </span>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              aria-hidden="true"
-              className="text-blue group-hover:translate-y-0.5 transition-transform duration-200 flex-shrink-0"
-            >
-              <path
-                d="M7 1v8M3 9l4 4 4-4"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </a>
+          <Button asChild variant="secondary" size="lg" className="mt-4 w-full justify-between">
+            <a href="/resume.pdf" aria-label="Download Resume (PDF)">
+              <span>Download Resume</span>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+                className="shrink-0"
+              >
+                <path
+                  d="M7 1v8M3 9l4 4 4-4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+          </Button>
         </div>
       </div>
     </section>

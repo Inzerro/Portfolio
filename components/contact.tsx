@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { getContactFieldErrors, type ContactFormInput } from "@/lib/contact-schema";
 import { cn } from "@/lib/utils";
 
@@ -13,8 +17,8 @@ const CONTACTS = [
   },
   {
     label: "GitHub",
-    value: "github.com/enzerro",
-    href: "https://github.com/enzerro",
+    value: "github.com/Inzerro",
+    href: "https://github.com/Inzerro",
   },
   {
     label: "Telegram",
@@ -38,6 +42,12 @@ const INITIAL_FORM = {
 type FormFields = typeof INITIAL_FORM;
 type FieldName = "name" | "email" | "message";
 type FieldErrors = Partial<Record<FieldName, string>>;
+type SubmitResult = {
+  error?: string;
+  fieldErrors?: FieldErrors;
+  delivery?: "storage" | "email" | "email+storage";
+  submissionId?: string;
+};
 
 function hasFieldErrors(errors: FieldErrors) {
   return Object.values(errors).some(Boolean);
@@ -50,6 +60,7 @@ export function Contact() {
     "idle",
   );
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
   const [formStartedAt, setFormStartedAt] = useState(() => Date.now());
 
   const getPayload = (nextForm: FormFields): ContactFormInput => ({
@@ -61,6 +72,7 @@ export function Contact() {
     setForm(INITIAL_FORM);
     setFieldErrors({});
     setSubmitError(null);
+    setSubmitSuccess(null);
     setStatus("idle");
     setFormStartedAt(Date.now());
   };
@@ -75,6 +87,10 @@ export function Contact() {
 
     if (submitError) {
       setSubmitError(null);
+    }
+
+    if (submitSuccess) {
+      setSubmitSuccess(null);
     }
 
     if (status === "error") {
@@ -114,11 +130,13 @@ export function Contact() {
       setFieldErrors(errors);
       setStatus("error");
       setSubmitError("Please fix the highlighted fields and try again.");
+      setSubmitSuccess(null);
       return;
     }
 
     setStatus("sending");
     setSubmitError(null);
+    setSubmitSuccess(null);
     setFieldErrors({});
 
     try {
@@ -130,12 +148,7 @@ export function Contact() {
         body: JSON.stringify(payload),
       });
 
-      const result = (await response.json().catch(() => null)) as
-        | {
-            error?: string;
-            fieldErrors?: FieldErrors;
-          }
-        | null;
+      const result = (await response.json().catch(() => null)) as SubmitResult | null;
 
       if (!response.ok) {
         if (result?.fieldErrors) {
@@ -154,6 +167,13 @@ export function Contact() {
       setForm(INITIAL_FORM);
       setFieldErrors({});
       setSubmitError(null);
+      setSubmitSuccess(
+        result?.delivery === "email+storage"
+          ? "Feedback sent successfully. It was saved and emailed."
+          : result?.delivery === "email"
+            ? "Feedback sent successfully. It was emailed."
+          : "Feedback sent successfully. It was saved for follow-up.",
+      );
       setFormStartedAt(Date.now());
     } catch {
       setStatus("error");
@@ -163,49 +183,35 @@ export function Contact() {
     }
   };
 
-  const inputBase =
-    "w-full bg-surface-1 border border-border px-4 py-4 md:py-3.5 text-[15px] md:text-sm font-light text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-blue transition-colors duration-200 font-sans";
-
   const fieldClassName = (field: FieldName) =>
-    cn(
-      inputBase,
-      fieldErrors[field] &&
-        "border-red-500/70 focus:border-red-500 aria-invalid:border-red-500",
-    );
+    cn(fieldErrors[field] && "border-red-500/70 focus-visible:border-red-500");
 
   return (
     <section
       id="contact"
-      className="py-20 md:py-36 px-5 md:px-12 max-w-6xl mx-auto"
+      className="page-shell section-shell"
       aria-labelledby="contact-heading"
     >
-      {/* Section header */}
-      <div className="flex items-center gap-3 mb-10 md:mb-16">
-        <div className="w-1.5 h-1.5 bg-blue flex-shrink-0" />
-        <span className="text-[10px] font-bold tracking-[0.4em] text-blue uppercase font-sans">
-          04 / Contact
-        </span>
-        <div className="flex-1 h-px bg-border" />
+      <div className="section-header">
+        <div className="h-1.5 w-1.5 shrink-0 bg-blue" />
+        <span className="section-kicker">04 / Contact</span>
+        <div className="section-divider" />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-10 md:gap-24">
-        {/* Left */}
+      <div className="grid gap-10 md:grid-cols-2 md:gap-24">
         <div>
-          <h2
-            id="contact-heading"
-            className="text-[clamp(1.7rem,6vw,2.5rem)] md:text-4xl font-black tracking-tight text-foreground text-balance leading-tight mb-4 md:mb-6"
-          >
+          <h2 id="contact-heading" className="section-title mb-4 md:mb-6">
             {"Let's build something"}
             <br />
             <span className="text-blue">great together.</span>
           </h2>
-          <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed mb-8 md:mb-12 font-light text-pretty">
+          <p className="section-copy mb-8 md:mb-12">
             {
               "I'm open to freelance projects, full-time roles, and interesting collabs. If you have something in mind — I'd love to hear it."
             }
           </p>
 
-          <div className="border border-border divide-y divide-border">
+          <div className="surface-panel overflow-hidden">
             {CONTACTS.map(({ label, value, href }) => (
               <a
                 key={label}
@@ -214,13 +220,13 @@ export function Contact() {
                 rel={
                   href.startsWith("mailto") ? undefined : "noopener noreferrer"
                 }
-                className="flex justify-between items-center px-5 md:px-6 py-4 md:py-4 hover:bg-surface-1 active:bg-surface-1 transition-colors duration-150 group min-h-[56px] touch-manipulation"
+                className="interactive-row group touch-manipulation"
                 aria-label={`${label}: ${value}`}
               >
-                <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase font-sans flex-shrink-0">
+                <span className="shrink-0 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                   {label}
                 </span>
-                <span className="text-xs font-semibold text-foreground group-hover:text-blue transition-colors duration-150 font-sans text-right ml-4 truncate">
+                <span className="motion-soft ml-4 truncate text-right font-sans text-xs font-semibold text-foreground group-hover:text-blue">
                   {value}
                 </span>
               </a>
@@ -228,27 +234,29 @@ export function Contact() {
           </div>
         </div>
 
-        {/* Right — form */}
         <div>
           {status === "sent" ? (
-            <div className="flex flex-col items-start justify-center h-full min-h-[280px] gap-4">
-              <div className="w-10 h-px bg-blue" />
+            <div className="surface-panel flex min-h-[320px] flex-col items-start justify-center gap-4 p-6 md:p-8">
+              <div className="h-px w-10 bg-blue" />
               <p className="text-2xl font-black text-foreground">
                 Message received.
               </p>
-              <p className="text-[15px] md:text-sm text-muted-foreground font-light leading-relaxed">
-                {"Thanks for reaching out — I'll get back to you shortly."}
+              <p className="section-copy max-w-md md:text-sm">
+                {submitSuccess ||
+                  "Thanks for reaching out — I'll get back to you shortly."}
               </p>
-              <button
+              <Button
                 onClick={resetForm}
-                className="mt-4 text-xs font-bold tracking-[0.2em] uppercase text-blue hover:text-blue-dim transition-colors font-sans touch-manipulation"
+                type="button"
+                variant="ghost"
+                className="mt-2 h-auto px-0 text-blue hover:bg-transparent hover:text-blue-dim"
               >
                 Send another
-              </button>
+              </Button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="space-y-3">
-              <div className="absolute left-[-9999px] top-auto h-0 w-0 overflow-hidden">
+            <form onSubmit={handleSubmit} noValidate className="surface-panel space-y-4 p-5 md:p-6">
+              <div className="absolute top-auto left-[-9999px] h-0 w-0 overflow-hidden">
                 <label htmlFor="website">Leave this field empty</label>
                 <input
                   id="website"
@@ -261,11 +269,11 @@ export function Contact() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="name" className="sr-only">
+              <div className="space-y-2">
+                <label htmlFor="name" className="field-note block">
                   Your name
                 </label>
-                <input
+                <Input
                   id="name"
                   name="name"
                   type="text"
@@ -281,25 +289,22 @@ export function Contact() {
                   aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
                 />
                 {fieldErrors.name && (
-                  <p
-                    id="contact-name-error"
-                    className="mt-2 text-[11px] font-medium text-red-400"
-                  >
+                  <p id="contact-name-error" className="text-[11px] font-medium text-red-400">
                     {fieldErrors.name}
                   </p>
                 )}
               </div>
 
-              <div>
-                <label htmlFor="email" className="sr-only">
+              <div className="space-y-2">
+                <label htmlFor="email" className="field-note block">
                   Your email
                 </label>
-                <input
+                <Input
                   id="email"
                   name="email"
                   type="email"
                   required
-                  placeholder="Your email"
+                  placeholder="you@example.com"
                   value={form.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -311,29 +316,26 @@ export function Contact() {
                   aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
                 />
                 {fieldErrors.email && (
-                  <p
-                    id="contact-email-error"
-                    className="mt-2 text-[11px] font-medium text-red-400"
-                  >
+                  <p id="contact-email-error" className="text-[11px] font-medium text-red-400">
                     {fieldErrors.email}
                   </p>
                 )}
               </div>
 
-              <div>
-                <label htmlFor="message" className="sr-only">
+              <div className="space-y-2">
+                <label htmlFor="message" className="field-note block">
                   Message
                 </label>
-                <textarea
+                <Textarea
                   id="message"
                   name="message"
                   required
                   rows={5}
-                  placeholder="Your message"
+                  placeholder="Tell me about your project"
                   value={form.message}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={cn(fieldClassName("message"), "resize-none")}
+                  className={cn("resize-none", fieldClassName("message"))}
                   maxLength={2000}
                   aria-invalid={Boolean(fieldErrors.message)}
                   aria-describedby={
@@ -343,7 +345,7 @@ export function Contact() {
                 {fieldErrors.message && (
                   <p
                     id="contact-message-error"
-                    className="mt-2 text-[11px] font-medium text-red-400"
+                    className="text-[11px] font-medium text-red-400"
                   >
                     {fieldErrors.message}
                   </p>
@@ -351,50 +353,23 @@ export function Contact() {
               </div>
 
               {submitError && (
-                <div
-                  className="border border-red-500/30 bg-red-500/10 px-4 py-3 text-[12px] font-medium text-red-300"
-                  role="alert"
-                  aria-live="polite"
-                >
-                  {submitError}
-                </div>
+                <Alert variant="destructive">
+                  <AlertDescription>{submitError}</AlertDescription>
+                </Alert>
               )}
 
-              <button
+              <Button
                 type="submit"
-                disabled={status === "sending"}
-                className="w-full py-4 md:py-4 bg-blue text-white font-sans text-xs font-bold tracking-[0.2em] uppercase hover:bg-blue-dim active:bg-blue-dim transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring touch-manipulation min-h-[56px]"
+                variant="primary"
+                size="lg"
+                loading={status === "sending"}
+                loadingText="Sending..."
+                className="w-full"
               >
-                {status === "sending" ? (
-                  <span className="inline-flex items-center gap-2">
-                    <svg
-                      className="animate-spin h-3.5 w-3.5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8v8z"
-                      />
-                    </svg>
-                    Sending...
-                  </span>
-                ) : (
-                  "Send Message"
-                )}
-              </button>
+                Send Message
+              </Button>
 
-              <p className="text-[10px] text-muted-foreground text-center font-sans pt-1">
+              <p className="pt-1 text-center font-sans text-[10px] text-muted-foreground">
                 No spam. I typically reply within 24 hours.
               </p>
             </form>

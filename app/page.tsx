@@ -22,7 +22,7 @@ export default function Home() {
       {!loaded && <Loader onComplete={handleLoaderComplete} />}
 
       <div
-        className={`transition-opacity duration-700 ${
+        className={`motion-panel transition-opacity ${
           loaded ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >

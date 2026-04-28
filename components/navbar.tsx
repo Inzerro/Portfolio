@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
   { label: "About", href: "#about", index: "01" },
@@ -43,7 +46,6 @@ export function Navbar() {
 
   const handleNav = (href: string) => {
     setMenuOpen(false);
-    // Small delay so the drawer animates out first
     setTimeout(() => {
       const el = document.getElementById(href.replace("#", ""));
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -53,17 +55,16 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 motion-panel ${
           scrolled
-            ? "bg-background/85 backdrop-blur-xl border-b border-border"
+            ? "border-b border-border bg-background/88 backdrop-blur-xl"
             : "bg-transparent"
         }`}
       >
         <nav
-          className="max-w-6xl mx-auto px-5 md:px-12 h-[60px] md:h-[68px] flex items-center justify-between"
+          className="page-shell flex h-16 items-center justify-between md:h-[4.5rem]"
           aria-label="Main navigation"
         >
-          {/* Wordmark */}
           <a
             href="#"
             onClick={(e) => {
@@ -71,19 +72,18 @@ export function Navbar() {
               setMenuOpen(false);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="flex items-center gap-3 group"
+            className="group flex items-center gap-3"
             aria-label="Temirlan Turdugulov — home"
           >
-            <span className="text-[11px] font-bold tracking-[0.32em] text-foreground/90 uppercase font-sans transition-colors duration-200 group-hover:text-blue">
+            <span className="motion-soft font-sans text-[11px] font-bold uppercase tracking-[0.32em] text-foreground/90 group-hover:text-blue">
               TT
             </span>
-            <span className="hidden sm:block text-xs font-semibold tracking-[0.2em] text-foreground uppercase font-sans">
+            <span className="hidden font-sans text-xs font-semibold uppercase tracking-[0.2em] text-foreground sm:block">
               Temirlan
             </span>
           </a>
 
-          {/* Desktop nav */}
-          <ul className="hidden md:flex items-center gap-1" role="list">
+          <ul className="hidden items-center gap-1 rounded-full border border-border/70 bg-card/50 px-2 py-1 shadow-[var(--shadow-xs)] md:flex" role="list">
             {NAV_LINKS.map((link) => {
               const isActive = active === link.href.replace("#", "");
               return (
@@ -94,7 +94,7 @@ export function Navbar() {
                       e.preventDefault();
                       handleNav(link.href);
                     }}
-                    className={`relative px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase transition-colors duration-200 font-sans ${
+                    className={`motion-soft relative rounded-full px-4 py-2 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] ${
                       isActive
                         ? "text-blue"
                         : "text-muted-foreground hover:text-foreground"
@@ -110,65 +110,57 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* Desktop CTA + mobile hamburger */}
           <div className="flex items-center gap-4">
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNav("#contact");
-              }}
-              className="hidden md:inline-flex items-center gap-2 px-5 py-2 bg-blue text-white text-xs font-semibold tracking-[0.1em] uppercase font-sans hover:bg-blue-dim transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Feedback
-            </a>
+            <Button asChild variant="primary" size="sm" className="hidden md:inline-flex">
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNav("#contact");
+                }}
+              >
+                Feedback
+              </a>
+            </Button>
 
-            {/* Hamburger — larger tap area */}
-            <button
-              className="md:hidden flex flex-col gap-[5px] p-3 -mr-3 touch-manipulation"
+            <Button
+              variant="ghost"
+              size="icon"
+              className="-mr-2 md:hidden"
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
               aria-controls="mobile-drawer"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
             >
-              <span
-                className={`block w-5 h-0.5 bg-foreground transition-all duration-200 origin-center ${
-                  menuOpen ? "rotate-45 translate-y-[7px]" : ""
-                }`}
-              />
-              <span
-                className={`block w-5 h-0.5 bg-foreground transition-all duration-200 ${
-                  menuOpen ? "opacity-0 scale-x-0" : ""
-                }`}
-              />
-              <span
-                className={`block w-5 h-0.5 bg-foreground transition-all duration-200 origin-center ${
-                  menuOpen ? "-rotate-45 -translate-y-[7px]" : ""
-                }`}
-              />
-            </button>
+              {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </Button>
           </div>
         </nav>
       </header>
 
-      {/* Full-screen mobile drawer */}
       <div
         id="mobile-drawer"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className={`fixed inset-0 z-40 md:hidden flex flex-col bg-background transition-all duration-300 ease-in-out ${
+        className={`fixed inset-0 z-40 flex flex-col bg-background/98 backdrop-blur-xl motion-panel md:hidden ${
           menuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
       >
-        {/* Drawer top padding to clear the navbar */}
-        <div className="flex-1 flex flex-col justify-center px-8 pb-16 pt-20">
-          {/* Nav links — large touch targets */}
+        <div className="flex flex-1 flex-col justify-center px-6 pb-14 pt-20 sm:px-8">
           <ul className="flex flex-col" role="list">
             {NAV_LINKS.map((link, i) => {
               const isActive = active === link.href.replace("#", "");
+              const delayClass =
+                i === 0
+                  ? "delay-[60ms]"
+                  : i === 1
+                    ? "delay-[110ms]"
+                    : i === 2
+                      ? "delay-[160ms]"
+                      : "delay-[210ms]";
               return (
                 <li key={link.href}>
                   <a
@@ -177,19 +169,17 @@ export function Navbar() {
                       e.preventDefault();
                       handleNav(link.href);
                     }}
-                    className={`flex items-baseline justify-between py-5 border-b border-border/40 group transition-colors duration-150 touch-manipulation ${
+                    className={`group flex items-baseline justify-between border-b border-border/40 py-5 touch-manipulation motion-panel ${
+                      delayClass
+                    } ${
                       isActive ? "text-blue" : "text-foreground"
+                    } ${
+                      menuOpen
+                        ? "translate-y-0 opacity-100"
+                        : "translate-y-3 opacity-0"
                     }`}
-                    style={{
-                      transitionDelay: menuOpen ? `${i * 50 + 60}ms` : "0ms",
-                      transform: menuOpen
-                        ? "translateY(0)"
-                        : "translateY(12px)",
-                      opacity: menuOpen ? 1 : 0,
-                      transition: `opacity 0.3s ease ${i * 50 + 60}ms, transform 0.3s ease ${i * 50 + 60}ms, color 0.15s`,
-                    }}
                   >
-                    <span className="text-3xl font-black tracking-tight leading-none">
+                    <span className="text-3xl leading-none font-black tracking-tight">
                       {link.label}
                     </span>
                     <span className="font-mono text-[10px] text-muted-foreground">
@@ -201,36 +191,31 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* CTA */}
-          <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNav("#contact");
-            }}
-            className="mt-10 flex items-center justify-center py-5 bg-blue text-white font-bold tracking-[0.15em] uppercase text-sm font-sans touch-manipulation"
-            style={{
-              transitionDelay: menuOpen ? "260ms" : "0ms",
-              transform: menuOpen ? "translateY(0)" : "translateY(12px)",
-              opacity: menuOpen ? 1 : 0,
-              transition: `opacity 0.3s ease 260ms, transform 0.3s ease 260ms`,
-            }}
-          >
-            Feedback
-          </a>
-
-          {/* Social quick links */}
           <div
-            className="mt-10 flex items-center gap-6"
-            style={{
-              transitionDelay: menuOpen ? "300ms" : "0ms",
-              transform: menuOpen ? "translateY(0)" : "translateY(8px)",
-              opacity: menuOpen ? 1 : 0,
-              transition: `opacity 0.3s ease 300ms, transform 0.3s ease 300ms`,
-            }}
+            className={`mt-10 motion-panel delay-[260ms] ${
+              menuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+            }`}
+          >
+            <Button asChild variant="primary" size="lg" className="w-full">
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNav("#contact");
+                }}
+              >
+                Feedback
+              </a>
+            </Button>
+          </div>
+
+          <div
+            className={`mt-10 flex flex-wrap items-center gap-4 motion-panel delay-[300ms] ${
+              menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            }`}
           >
             {[
-              { label: "GitHub", href: "https://github.com/enzerro" },
+              { label: "GitHub", href: "https://github.com/Inzerro" },
               { label: "Telegram", href: "https://t.me/TurdugulovTurdugulov" },
               { label: "Email", href: "mailto:Indrovichgit@gmail.com" },
             ].map(({ label, href }) => (
@@ -241,7 +226,7 @@ export function Navbar() {
                 rel={
                   href.startsWith("mailto") ? undefined : "noopener noreferrer"
                 }
-                className="text-[10px] font-semibold tracking-[0.25em] text-muted-foreground uppercase font-sans hover:text-blue transition-colors touch-manipulation"
+                className="motion-soft font-sans text-[10px] font-semibold uppercase tracking-[0.25em] text-muted-foreground touch-manipulation hover:text-blue"
               >
                 {label}
               </a>
@@ -249,9 +234,8 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Bottom safe area */}
-        <div className="px-8 pb-8">
-          <p className="text-[10px] font-semibold tracking-[0.2em] text-muted-foreground/50 uppercase font-sans">
+        <div className="px-6 pb-8 sm:px-8">
+          <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/50">
             Temirlan Turdugulov &copy; {new Date().getFullYear()}
           </p>
         </div>

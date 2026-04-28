@@ -31,7 +31,7 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background transition-opacity duration-700 ${
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background motion-panel ${
         exiting ? "opacity-0" : "opacity-100"
       }`}
       aria-label="Loading"
@@ -41,15 +41,15 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
       aria-valuemax={100}
     >
       {/* Monogram */}
-      <div className="mb-14 select-none flex flex-col items-center gap-3">
-        <span className="text-xs font-semibold tracking-[0.5em] text-muted-foreground uppercase font-sans">
+      <div className="motion-entrance mb-14 flex select-none flex-col items-center gap-3">
+        <span className="font-sans text-xs font-semibold uppercase tracking-[0.5em] text-muted-foreground">
           TT
         </span>
         <div className="w-px h-6 bg-border" />
       </div>
 
       {/* Counter */}
-      <div className="relative flex items-end gap-1">
+      <div className="motion-entrance relative flex items-end gap-1 [animation-delay:120ms]">
         <span
           className="font-mono text-8xl font-bold tabular-nums text-foreground leading-none"
           style={{ fontVariantNumeric: "tabular-nums" }}
@@ -60,15 +60,14 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
       </div>
 
       {/* Progress bar */}
-      <div className="mt-10 w-56 h-px bg-border overflow-hidden">
+      <div className="motion-entrance mt-10 h-px w-56 overflow-hidden bg-border [animation-delay:180ms]">
         <div
-          className="h-full bg-blue transition-all duration-75"
+          className="h-full origin-left bg-blue transition-[width,opacity,transform] [transition-duration:220ms] [transition-timing-function:var(--ease-decelerate)]"
           style={{ width: `${count}%` }}
         />
       </div>
 
-      {/* Label */}
-      <p className="mt-6 text-[10px] font-semibold tracking-[0.35em] text-muted-foreground uppercase font-sans">
+      <p className="motion-entrance mt-6 font-sans text-[10px] font-semibold uppercase tracking-[0.35em] text-muted-foreground [animation-delay:240ms]">
         Loading
       </p>
     </div>

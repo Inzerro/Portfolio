@@ -30,48 +30,40 @@ export function Skills() {
   return (
     <section
       id="skills"
-      className="py-20 md:py-36 px-5 md:px-12 max-w-6xl mx-auto"
+      className="page-shell section-shell"
       aria-labelledby="skills-heading"
     >
-      {/* Section header */}
-      <div className="flex items-center gap-3 mb-10 md:mb-16">
-        <div className="w-1.5 h-1.5 bg-blue flex-shrink-0" />
-        <span className="text-[10px] font-bold tracking-[0.4em] text-blue uppercase font-sans">
+      <div className="section-header">
+        <div className="h-1.5 w-1.5 shrink-0 bg-blue" />
+        <span className="section-kicker">
           02 / Skills
         </span>
-        <div className="flex-1 h-px bg-border" />
+        <div className="section-divider" />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6 md:gap-16 items-end mb-10 md:mb-16">
-        <h2
-          id="skills-heading"
-          className="text-[clamp(1.7rem,6vw,2.5rem)] md:text-4xl font-black tracking-tight text-foreground text-balance leading-tight"
-        >
+      <div className="mb-10 grid items-end gap-6 md:mb-16 md:grid-cols-2 md:gap-16">
+        <h2 id="skills-heading" className="section-title">
           The tools I reach
           <br />
           for every day.
         </h2>
-        <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed font-light text-pretty">
+        <p className="section-copy">
           A modern frontend stack refined over years of building production
           applications — focused on developer experience and user delight.
         </p>
       </div>
 
-      {/* Skills grid:
-          Mobile  → 1 col, cards separated by gap (no gap-px tricks needed)
-          sm      → 2 col
-          lg      → 4 col, gap-px mosaic */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-px sm:bg-border sm:border sm:border-border">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {SKILLS.map(({ category, icon, items }) => (
           <div
             key={category}
-            className="bg-surface-1 sm:bg-background border border-border sm:border-0 p-6 md:p-8 group hover:bg-surface-1 active:bg-surface-1 transition-colors duration-200"
+            className="surface-panel group p-6 md:p-8"
           >
-            <div className="flex items-center justify-between mb-5 md:mb-6">
-              <p className="text-[10px] font-bold tracking-[0.3em] text-muted-foreground uppercase font-sans">
+            <div className="mb-5 flex items-center justify-between md:mb-6">
+              <p className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">
                 {category}
               </p>
-              <span className="font-mono text-xs text-muted-foreground group-hover:text-blue transition-colors duration-200">
+              <span className="motion-soft font-mono text-xs text-muted-foreground group-hover:text-blue">
                 {icon}
               </span>
             </div>
@@ -79,9 +71,9 @@ export function Skills() {
               {items.map((skill) => (
                 <li
                   key={skill}
-                  className="flex items-center gap-2.5 text-[15px] md:text-sm font-medium text-foreground leading-none"
+                  className="flex items-center gap-2.5 text-[15px] leading-none font-medium text-foreground md:text-sm"
                 >
-                  <span className="w-1 h-1 rounded-full bg-blue flex-shrink-0" />
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue" />
                   {skill}
                 </li>
               ))}

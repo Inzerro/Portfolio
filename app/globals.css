@@ -4,42 +4,94 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Charcoal + off-white + cobalt blue */
   --background: oklch(0.09 0.004 265);
   --foreground: oklch(0.94 0.008 90);
-  --card: oklch(0.12 0.005 265);
+  --card: oklch(0.125 0.006 265);
   --card-foreground: oklch(0.94 0.008 90);
-  --popover: oklch(0.12 0.005 265);
+  --popover: oklch(0.125 0.006 265);
   --popover-foreground: oklch(0.94 0.008 90);
-  /* Cobalt blue primary */
   --primary: oklch(0.55 0.22 264);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.16 0.006 265);
   --secondary-foreground: oklch(0.94 0.008 90);
   --muted: oklch(0.16 0.006 265);
   --muted-foreground: oklch(0.58 0.01 90);
-  --accent: oklch(0.15 0.006 265);
+  --accent: oklch(0.18 0.009 265);
   --accent-foreground: oklch(0.94 0.008 90);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.2 0.008 265);
+  --border: oklch(0.22 0.009 265);
   --input: oklch(0.15 0.006 265);
   --ring: oklch(0.55 0.22 264);
-  --radius: 0.25rem;
-  /* Surface tones */
+  --radius: 0.875rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.5rem;
   --surface-1: oklch(0.12 0.005 265);
   --surface-2: oklch(0.15 0.006 265);
   --surface-3: oklch(0.18 0.007 265);
-  /* Blue accent shades — bumped to 0.62 for WCAG AA on dark bg */
   --blue: oklch(0.62 0.22 264);
   --blue-dim: oklch(0.52 0.20 264);
   --blue-glow: oklch(0.62 0.22 264 / 0.12);
-  /* Highlight — off-white warm */
   --highlight: oklch(0.88 0.012 90);
+  --success: oklch(0.72 0.16 150);
+  --success-foreground: oklch(0.12 0.01 150);
+  --warning: oklch(0.8 0.18 85);
+  --warning-foreground: oklch(0.2 0.03 85);
+  --error: var(--destructive);
+  --error-foreground: var(--destructive-foreground);
+  --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.14);
+  --shadow-sm: 0 0 0 1px oklch(0.35 0.02 260 / 0.16),
+    0 14px 30px oklch(0 0 0 / 0.18);
+  --shadow-md: 0 0 0 1px oklch(0.35 0.02 260 / 0.16),
+    0 24px 60px oklch(0 0 0 / 0.24);
+  --shadow-focus: 0 0 0 4px oklch(0.55 0.22 264 / 0.2);
+  --border-subtle: 1px solid oklch(0.24 0.01 265 / 0.72);
+  --border-strong: 1px solid oklch(0.32 0.014 265 / 0.9);
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-decelerate: cubic-bezier(0.12, 0.86, 0.32, 1);
+  --transition-fast: 180ms var(--ease-standard);
+  --transition-base: 260ms var(--ease-emphasized);
+  --transition-slow: 420ms var(--ease-emphasized);
+  --transition-panel: 320ms var(--ease-emphasized);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+  --control-height-sm: 2.5rem;
+  --control-height-md: 3rem;
+  --control-height-lg: 3.5rem;
+  --container-xs: 40rem;
+  --container-sm: 48rem;
+  --container-md: 64rem;
+  --container-lg: 72rem;
+  --container-xl: 80rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
 }
 
 @theme inline {
-  --font-sans: var(--font-montserrat);
+  --font-sans: var(--font-manrope);
   --font-mono: var(--font-space-mono);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -70,18 +122,222 @@
   --color-blue: var(--blue);
   --color-blue-dim: var(--blue-dim);
   --color-blue-glow: var(--blue-glow);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
   }
+
   * {
     @apply border-border outline-ring/50;
   }
+
+  ::selection {
+    background: color-mix(in oklab, var(--blue) 32%, transparent);
+    color: var(--foreground);
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
+    background-image:
+      radial-gradient(circle at top left, oklch(0.2 0.04 264 / 0.18), transparent 30%),
+      radial-gradient(circle at top right, oklch(0.16 0.03 220 / 0.1), transparent 28%),
+      linear-gradient(180deg, oklch(0.11 0.006 265) 0%, oklch(0.09 0.004 265) 32%, oklch(0.08 0.004 265) 100%);
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'ss01' 1, 'cv01' 1, 'cv11' 1;
+  }
+
+  a,
+  input,
+  textarea,
+  select {
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-base),
+      opacity var(--transition-fast),
+      transform var(--transition-base);
+  }
+
+  button,
+  [role='button'],
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    transition: none;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
   }
 }
 
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-6xl px-5 md:px-12;
+  }
 
+  .section-shell {
+    @apply py-20 md:py-32;
+  }
+
+  .section-header {
+    @apply mb-10 flex items-center gap-3 md:mb-16;
+  }
+
+  .section-kicker {
+    @apply text-blue font-sans text-[10px] font-bold uppercase tracking-[0.34em];
+  }
+
+  .section-divider {
+    @apply bg-border h-px flex-1;
+  }
+
+  .section-title {
+    @apply text-foreground text-[clamp(1.8rem,6vw,2.75rem)] font-black leading-[1.02] tracking-tight text-balance;
+  }
+
+  .section-copy {
+    @apply text-muted-foreground text-[15px] leading-relaxed font-light text-pretty md:text-base;
+  }
+
+  .surface-panel {
+    @apply bg-card border-border rounded-lg border;
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color var(--transition-fast),
+      background-color var(--transition-fast),
+      box-shadow var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .surface-panel-strong {
+    @apply bg-surface-1 border-border rounded-xl border;
+    box-shadow: var(--shadow-md);
+  }
+
+  .interactive-row {
+    @apply flex min-h-14 items-center justify-between gap-4 border-b border-border/70 px-5 py-4 md:px-6;
+  }
+
+  .interactive-row:last-child {
+    @apply border-b-0;
+  }
+
+  .interactive-row:hover {
+    @apply bg-accent/70;
+  }
+
+  .motion-soft {
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-base),
+      opacity var(--transition-fast),
+      transform var(--transition-base);
+  }
+
+  .motion-panel {
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-panel),
+      box-shadow var(--transition-panel),
+      border-color var(--transition-fast);
+  }
+
+  .motion-entrance {
+    animation: hero-reveal 820ms var(--ease-emphasized) both;
+  }
+
+  .ui-tag {
+    @apply border-border text-muted-foreground inline-flex items-center rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em];
+  }
+
+  .field-note {
+    @apply text-muted-foreground text-[11px] font-medium;
+  }
+
+  .status-error {
+    @apply border-error/30 bg-error/10 text-error-foreground rounded-lg border px-4 py-3 text-sm;
+  }
+}
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drawer-item-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes soft-progress {
+  from {
+    transform: scaleX(0.92);
+    opacity: 0.75;
+  }
+
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  [data-slot='dialog-overlay'],
+  [data-slot='alert-dialog-overlay'],
+  [data-slot='sheet-overlay'],
+  [data-slot='drawer-overlay'] {
+    animation-duration: 220ms;
+    animation-timing-function: var(--ease-standard);
+    backdrop-filter: blur(10px);
+  }
+
+  [data-slot='dialog-content'],
+  [data-slot='alert-dialog-content'],
+  [data-slot='sheet-content'],
+  [data-slot='popover-content'],
+  [data-slot='tooltip-content'],
+  [data-slot='dropdown-menu-content'],
+  [data-slot='select-content'],
+  [data-slot='navigation-menu-content'],
+  [data-slot='navigation-menu-viewport'] {
+    animation-duration: 260ms;
+    animation-timing-function: var(--ease-emphasized);
+    will-change: transform, opacity;
+  }
+
+  [data-slot='accordion-content'] {
+    animation-duration: 260ms;
+    animation-timing-function: var(--ease-emphasized);
+  }
+}

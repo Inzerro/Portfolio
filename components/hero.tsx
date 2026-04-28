@@ -1,83 +1,45 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    el.style.opacity = "0";
-    el.style.transform = "translateY(24px)";
-    const raf = requestAnimationFrame(() => {
-      el.style.transition =
-        "opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1)";
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0)";
-    });
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
   const handleScroll = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <section
-      className="relative min-h-[100svh] flex flex-col justify-center px-5 md:px-12 max-w-6xl mx-auto pt-24 md:pt-40 pb-32 md:pb-24"
+      className="page-shell relative flex min-h-[100svh] flex-col justify-center overflow-hidden pt-28 pb-36 md:pt-40 md:pb-24"
       aria-label="Hero"
     >
-      {/* Subtle dot-grid background */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          backgroundImage:
-            "radial-gradient(oklch(0.28 0.01 265) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-          maskImage:
-            "radial-gradient(ellipse 70% 80% at 20% 50%, black 30%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 70% 80% at 20% 50%, black 30%, transparent 100%)",
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(oklch(0.28_0.01_265)_1px,transparent_1px)] bg-[size:28px_28px] [mask-image:radial-gradient(ellipse_70%_80%_at_20%_50%,black_30%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_70%_80%_at_20%_50%,black_30%,transparent_100%)]" />
+      <div className="pointer-events-none absolute top-1/2 left-0 -z-10 h-[28rem] w-[28rem] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,oklch(0.55_0.22_264_/_0.08)_0%,transparent_70%)] md:h-[32rem] md:w-[32rem]" />
 
-      {/* Blue glow behind name */}
-      <div
-        className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-10 w-[500px] h-[500px] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, oklch(0.55 0.22 264 / 0.08) 0%, transparent 70%)",
-        }}
-      />
-
-      <div ref={containerRef}>
-        {/* Name — tighter on mobile */}
-        <h1 className="text-[clamp(2.6rem,12vw,5.5rem)] md:text-7xl lg:text-[88px] font-black tracking-tight text-foreground leading-[0.92] text-balance mb-4 md:mb-5">
+      <div className="motion-entrance">
+        <h1 className="mb-4 text-[clamp(2.9rem,12vw,5.75rem)] leading-[0.9] font-black tracking-tight text-balance text-foreground md:mb-5 md:text-7xl lg:text-[88px]">
           Temirlan
           <br />
           <span className="text-blue">Turdugulov</span>
         </h1>
 
-        {/* Role line */}
-        <div className="flex items-center gap-4 mb-6 md:mb-8">
-          <div className="h-px w-8 md:w-10 bg-blue flex-shrink-0" />
-          <span className="text-[10px] md:text-xs font-semibold tracking-[0.3em] md:tracking-[0.35em] text-muted-foreground uppercase font-sans">
+        <div className="mb-6 flex items-center gap-4 md:mb-8">
+          <div className="h-px w-8 shrink-0 bg-blue md:w-10" />
+          <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground md:text-xs md:tracking-[0.35em]">
             Frontend Developer
           </span>
         </div>
 
-        {/* Intro */}
-        <p className="text-[15px] md:text-lg text-muted-foreground leading-relaxed mb-8 md:mb-12 font-light text-pretty max-w-[520px]">
+        <p className="mb-8 max-w-[36rem] text-[15px] leading-relaxed font-light text-pretty text-muted-foreground md:mb-12 md:text-lg">
           I build fast, accessible, and visually refined web interfaces. Focused
           on React and Next.js — where clean code meets thoughtful design.
         </p>
 
-        {/* CTA buttons — stacked full-width on mobile, inline on md+ */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button
             onClick={() => handleScroll("projects")}
-            className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 md:py-3.5 bg-blue text-white text-xs font-bold tracking-[0.15em] uppercase font-sans hover:bg-blue-dim transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring touch-manipulation"
+            variant="primary"
+            size="lg"
+            className="group w-full sm:w-auto"
           >
             View Projects
             <svg
@@ -86,7 +48,6 @@ export function Hero() {
               viewBox="0 0 12 12"
               fill="none"
               aria-hidden="true"
-              className="group-hover:translate-x-0.5 transition-transform duration-200"
             >
               <path
                 d="M2 6h8M6 2l4 4-4 4"
@@ -96,18 +57,19 @@ export function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => handleScroll("contact")}
-            className="inline-flex items-center justify-center px-8 py-4 md:py-3.5 border border-border text-foreground text-xs font-bold tracking-[0.15em] uppercase font-sans hover:border-blue hover:text-blue transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring touch-manipulation"
+            variant="secondary"
+            size="lg"
+            className="w-full sm:w-auto"
           >
             Contact Me
-          </button>
+          </Button>
         </div>
       </div>
 
-      {/* Stats row — pinned to bottom of hero, respects section padding */}
-      <div className="absolute bottom-8 md:bottom-10 left-5 right-5 md:left-12 md:right-12 grid grid-cols-3 md:flex md:flex-wrap md:gap-8 border-t border-border pt-6 md:pt-8">
+      <div className="absolute right-5 bottom-8 left-5 grid grid-cols-3 border-t border-border pt-6 md:right-12 md:bottom-10 md:left-12 md:flex md:flex-wrap md:gap-8 md:pt-8">
         {[
           { value: "3+", label: "Years" },
           { value: "20+", label: "Projects" },
@@ -116,22 +78,21 @@ export function Hero() {
           <div
             key={label}
             className={`flex flex-col gap-1.5 md:gap-1 ${
-              i > 0 ? "pl-5 md:pl-0 border-l border-border md:border-none" : ""
+              i > 0 ? "border-l border-border pl-5 md:border-none md:pl-0" : ""
             }`}
           >
-            <span className="text-xl md:text-2xl font-black text-foreground leading-none">
+            <span className="text-xl leading-none font-black text-foreground md:text-2xl">
               {value}
             </span>
-            <span className="text-[9px] md:text-[10px] font-semibold tracking-[0.2em] text-muted-foreground uppercase font-sans">
+            <span className="font-sans text-[9px] font-semibold uppercase tracking-[0.2em] text-muted-foreground md:text-[10px]">
               {label}
             </span>
           </div>
         ))}
       </div>
 
-      {/* Scroll indicator — desktop only */}
-      <div className="hidden md:flex absolute bottom-10 right-12 flex-col items-center gap-2">
-        <span className="text-[9px] font-semibold tracking-[0.35em] text-muted-foreground uppercase font-sans [writing-mode:vertical-rl]">
+      <div className="absolute right-12 bottom-10 hidden flex-col items-center gap-2 md:flex">
+        <span className="font-sans text-[9px] font-semibold uppercase tracking-[0.35em] text-muted-foreground [writing-mode:vertical-rl]">
           Scroll
         </span>
         <div className="w-px h-14 bg-gradient-to-b from-border to-transparent" />
