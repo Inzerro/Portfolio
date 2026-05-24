@@ -22,8 +22,8 @@ const CONTACTS = [
   },
   {
     label: "Telegram",
-    value: "@TurdugulovTurdugulov",
-    href: "https://t.me/TurdugulovTurdugulov",
+    value: "@Turdugulov_Temirlan",
+    href: "https://t.me/Turdugulov_Temirlan",
   },
   {
     label: "WhatsApp",

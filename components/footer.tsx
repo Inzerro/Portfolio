@@ -1,6 +1,6 @@
 const LINKS = [
   { label: "GitHub", href: "https://github.com/Inzerro" },
-  { label: "Telegram", href: "https://t.me/TurdugulovTurdugulov" },
+  { label: "Telegram", href: "https://t.me/Turdugulov_Temirlan" },
   { label: "Email", href: "mailto:Indrovichgit@gmail.com" },
 ];
 
