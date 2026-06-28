@@ -32,6 +32,21 @@ const PROJECTS = [
     demo: "https://carkg.vercel.app/",
     github: null,
   },
+  {
+    number: "03",
+    title: "Aspekt Design Studio",
+    description:
+      "A modern web studio website focused on premium design, smooth interactions, and a strong digital presence. Built with performance, responsiveness, and user experience in mind.",
+    highlights: [
+      "Modern UI/UX design",
+      "Responsive layout",
+      "Smooth animations",
+      "SEO-friendly structure",
+    ],
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    demo: "https://aspekt-jade.vercel.app/",
+    github: null,
+  },
 ];
 
 export function Projects() {
@@ -59,7 +74,10 @@ export function Projects() {
 
       <div className="flex flex-col gap-4">
         {PROJECTS.map((project) => (
-          <article key={project.number} className="surface-panel group overflow-hidden">
+          <article
+            key={project.number}
+            className="surface-panel group overflow-hidden"
+          >
             <div className="md:hidden">
               <div className="flex items-center justify-between border-b border-border/60 px-5 pt-5 pb-3">
                 <span className="font-mono text-[10px] font-bold text-blue">
@@ -67,7 +85,11 @@ export function Projects() {
                 </span>
                 <div className="flex flex-wrap justify-end gap-1.5">
                   {project.stack.map((tech) => (
-                    <Badge key={tech} variant="outline" className="font-mono text-[9px]">
+                    <Badge
+                      key={tech}
+                      variant="outline"
+                      className="font-mono text-[9px]"
+                    >
                       {tech}
                     </Badge>
                   ))}
@@ -96,7 +118,12 @@ export function Projects() {
 
               <div className="border-t border-border/60 px-5 py-4">
                 {project.demo ? (
-                  <Button asChild variant="primary" size="default" className="w-full">
+                  <Button
+                    asChild
+                    variant="primary"
+                    size="default"
+                    className="w-full"
+                  >
                     <a
                       href={project.demo}
                       target="_blank"
@@ -140,7 +167,10 @@ export function Projects() {
                 <p className="mb-4 max-w-lg text-sm leading-relaxed font-light text-pretty text-muted-foreground">
                   {project.description}
                 </p>
-                <ul className="mb-5 grid max-w-lg grid-cols-2 gap-x-6 gap-y-2" role="list">
+                <ul
+                  className="mb-5 grid max-w-lg grid-cols-2 gap-x-6 gap-y-2"
+                  role="list"
+                >
                   {project.highlights.map((h) => (
                     <li
                       key={h}
@@ -166,7 +196,11 @@ export function Projects() {
 
               <div className="flex flex-col items-end gap-3">
                 {project.demo ? (
-                  <Button asChild variant="primary" className="min-w-[11rem] whitespace-nowrap">
+                  <Button
+                    asChild
+                    variant="primary"
+                    className="min-w-[11rem] whitespace-nowrap"
+                  >
                     <a
                       href={project.demo}
                       target="_blank"

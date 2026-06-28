@@ -71,8 +71,8 @@ export function Hero() {
 
       <div className="absolute right-5 bottom-8 left-5 grid grid-cols-3 border-t border-border pt-6 md:right-12 md:bottom-10 md:left-12 md:flex md:flex-wrap md:gap-8 md:pt-8">
         {[
-          { value: "3+", label: "Years" },
-          { value: "20+", label: "Projects" },
+          { value: "2+", label: "Years" },
+          { value: "3+", label: "Projects" },
           { value: "100%", label: "Passion" },
         ].map(({ value, label }, i) => (
           <div

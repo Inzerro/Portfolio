@@ -2,12 +2,12 @@ const SKILLS = [
   {
     category: "Core",
     icon: "{ }",
-    items: ["React", "Next.js", "TypeScript", "JavaScript (ES2024+)"],
+    items: ["React", "Next.js", "TypeScript", "JavaScript (ES6+)"],
   },
   {
     category: "Styling",
     icon: "//",
-    items: ["Tailwind CSS", "CSS / SCSS", "Framer Motion", "Radix UI"],
+    items: ["Tailwind CSS", "CSS", "Framer Motion"],
   },
   {
     category: "Tooling",
@@ -35,9 +35,7 @@ export function Skills() {
     >
       <div className="section-header">
         <div className="h-1.5 w-1.5 shrink-0 bg-blue" />
-        <span className="section-kicker">
-          02 / Skills
-        </span>
+        <span className="section-kicker">02 / Skills</span>
         <div className="section-divider" />
       </div>
 
@@ -55,10 +53,7 @@ export function Skills() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {SKILLS.map(({ category, icon, items }) => (
-          <div
-            key={category}
-            className="surface-panel group p-6 md:p-8"
-          >
+          <div key={category} className="surface-panel group p-6 md:p-8">
             <div className="mb-5 flex items-center justify-between md:mb-6">
               <p className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">
                 {category}

@@ -18,9 +18,7 @@ export function About() {
         <div>
           <div className="section-header md:mb-10">
             <div className="h-1.5 w-1.5 shrink-0 bg-blue" />
-            <span className="section-kicker">
-              01 / About
-            </span>
+            <span className="section-kicker">01 / About</span>
             <div className="section-divider" />
           </div>
 
@@ -53,10 +51,7 @@ export function About() {
         <div>
           <div className="surface-panel overflow-hidden">
             {facts.map(({ label, value }) => (
-              <div
-                key={label}
-                className="interactive-row group"
-              >
+              <div key={label} className="interactive-row group">
                 <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                   {label}
                 </span>
@@ -67,8 +62,13 @@ export function About() {
             ))}
           </div>
 
-          <Button asChild variant="secondary" size="lg" className="mt-4 w-full justify-between">
-            <a href="/resume.pdf" aria-label="Download Resume (PDF)">
+          <Button
+            asChild
+            variant="secondary"
+            size="lg"
+            className="mt-4 w-full justify-between"
+          >
+            <a href="/Resume.Temirlan.pdf" aria-label="Download Resume (PDF)">
               <span>Download Resume</span>
               <svg
                 width="14"
