@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 const facts = [
   { label: "Location", value: "Bishkek, Kyrgyzstan" },
-  { label: "Focus", value: "React · Next.js · TypeScript" },
+  { label: "Focus", value: "React · Next.js · JavaScript" },
   { label: "Approach", value: "Design-driven development" },
   { label: "Status", value: "Open to opportunities" },
 ];

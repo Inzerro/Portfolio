@@ -2,7 +2,7 @@ const SKILLS = [
   {
     category: "Core",
     icon: "{ }",
-    items: ["React", "Next.js", "TypeScript", "JavaScript (ES6+)"],
+    items: ["React", "Next.js", "JavaScript (ES6+)"],
   },
   {
     category: "Styling",
